@@ -8,6 +8,8 @@
 #include "stock.hpp"
 #include <iostream>
 #include <array>
+#include <vector>
+#include <map>
 
 struct PolygonRequest;
 
@@ -16,11 +18,15 @@ class Network {
 
     Network() {};
 
-    void updateStock(Stock &stock);
+    bool updateStock(Stock &stock);
     std::string makePolygonRequest(PolygonRequest &request);
     std::string exec(const char* cmd);
 
     StockData::DailyOpenClose getDailyOpenClose(StockSymbol symbol);
+
+    static const std::string getDate() {
+        return "2024-02-01";
+    }
 };
 
 enum PolygonRequestType {DailyOpenClose};
@@ -36,7 +42,7 @@ struct PolygonRequest {
             case PolygonRequestType::DailyOpenClose : {
                 type = "/v1/open-close/";
                 symbolStr = stockSymbolToString(symbol);
-                params = "/2023-01-09?adjusted=true&";
+                params = "/" + Network::getDate() + "?";
                 break;
             }
             default : {};

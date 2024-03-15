@@ -41,7 +41,12 @@ bool UI::Menu::menuInput() {
 void UI::Menu::updateUI() {
 
     for(auto &p : currentPortfolio.stocks){
-        network.updateStock(p.second);
+        if(!network.updateStock(p.second)){
+            printf("Failed to update %s, ", stockSymbolToString(p.first).c_str());
+            std::string response;
+            UI::getUserInput("continue anyway? (y/n)", response);
+            if(response != "y"){return;}
+        }
     }
 
     system("clear");

@@ -29,14 +29,16 @@ void UI::printStockLine(Stock &stock){
 
     double profitLoss = totalValue - purchaseValue;
     
-    printf("%s| %s Units @ $%s, total value $%s | Purchased @ $%s, total cost $%s | profit/loss $%s\n",
+    printf("%s| %s Units @ $%s, total value $%s | Purchased @ $%s, total cost $%s | profit/loss $%s | Low $%s, High $%s\n",
         UI::Element(stock.symbolStr()).tiny(),
         UI::Element(stock.quantity).small(),
         UI::Element(stock.price).small(),
         UI::Element(totalValue).small(),
         UI::Element(stock.purchasePrice).small(),
         UI::Element(purchaseValue).small(),
-        UI::Element(profitLoss).small()
+        UI::Element(profitLoss).small(),
+        UI::Element(stock.lowPrice).small(),
+        UI::Element(stock.highPrice).small()
     );
 }
 

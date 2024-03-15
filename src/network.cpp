@@ -1,23 +1,65 @@
 
 #include "network.hpp"
 
-void Network::updateStock(Stock &stock){
-    // Random noise;
+bool Network::updateStock(Stock &stock){
 
-    double testNoise = 0.8 + 0.4 * ((double)rand() / INT_MAX);
+    StockData::DailyOpenClose data = getDailyOpenClose(stock.symbol);
 
-    std::cout << "Noise: " << testNoise << "\n";
+    if(!data.validData){return false;}
 
-    stock.price = stock.purchasePrice * testNoise;
+    stock.highPrice = data.high;
+    stock.lowPrice = data.low;
+    stock.price = data.open;
+    return true;
 }
 
 std::string Network::makePolygonRequest(PolygonRequest &request) {
-    std::string cmd = std::string("curl -s ") + request.getUrl();
-    std::cout << "CMD Size: " << cmd.size() << "\n";
-    std::cout << "CMD: " << cmd.c_str() << "\n";
+    printf("Fetching %s Stock Data...\n", request.symbolStr.c_str());
+    std::string cmd = std::string("curl ") + request.getUrl() + " -s";
     std::string jsonResult = exec(cmd.c_str());
-    std::cout << "JSON: " << jsonResult << "\n";
     return jsonResult;
+}
+
+std::unordered_map<std::string, std::string> stringParseJson(std::string &jsonStr, bool &error) {
+    std::vector<std::pair<std::string,std::string>> words(1, {"",""});
+    bool first = true;
+    for(char c : jsonStr){
+        if(c == '{' || c == '}' || c == '"'){continue;}
+        if(c == ':' || c == ','){
+            first = !first;
+            if(first){
+                words.push_back({"",""});
+            }
+        }
+        else{
+            if(first){words.back().first += c;}
+            else{words.back().second += c;}
+        }        
+    }
+    std::unordered_map<std::string, std::string> jsonMap(words.begin(), words.end());
+
+    if(jsonMap.find("status") == jsonMap.end()){
+        std::cout << "Error, no json status code found\n";
+        error = true;
+    }
+    if(jsonMap["status"] != "OK"){
+        std::cout << "Error parsing json with code: " << jsonMap["status"] << "\n";
+        error = true;
+    }
+
+    return jsonMap;
+}
+
+void jsonTryPut(std::unordered_map<std::string, std::string> &jsonMap, std::string name, std::string &var) {
+    std::unordered_map<std::string, std::string>::iterator it = jsonMap.find('"' + name + '"');
+    if(it == jsonMap.end()){return;}
+    var = it->second;
+}
+
+void jsonTryPut(std::unordered_map<std::string, std::string> &jsonMap, std::string name, double &var) {
+    std::unordered_map<std::string, std::string>::iterator it = jsonMap.find(name);
+    if(it == jsonMap.end()){return;}
+    sscanf(it->second.c_str(), "%lf", &var);
 }
 
 StockData::DailyOpenClose Network::getDailyOpenClose(StockSymbol symbol) {
@@ -25,34 +67,24 @@ StockData::DailyOpenClose Network::getDailyOpenClose(StockSymbol symbol) {
     PolygonRequest prequest = PolygonRequest(DailyOpenClose, symbol);
     std::string jsonStr = makePolygonRequest(prequest);
 
-    sscanf(jsonStr.c_str(), "%s %s %lf %lf %lf %lf %lu %lf %lf",
-        &data.from[0],
-        &data.symbol[0],
-        &data.open,
-        &data.high,
-        &data.low,
-        &data.close,
-        &data.volume,
-        &data.afterHours,
-        &data.preMarket
-    );
+    bool error = false;
+    std::unordered_map<std::string, std::string> jsonMap = stringParseJson(jsonStr, error);
 
-    /*
-        sscanf(jsonStr.c_str(), '"{
-        "status": "OK",
-        "from": "2023-01-09",
-        "symbol": "AAPL",
-        "open": 130.465,
-        "high": 133.41,
-        "low": 129.89,
-        "close": 130.15,
-        "volume": 70790813,
-        "afterHours": 129.85,
-        "preMarket": 129.6
-        }"',
-    */
+    if(error){
+        data.validData = false;
+        return data;
+    }
 
-    std::cout << data.volume << ", " << data.open << ", " << data.symbol << "\n";
+    jsonTryPut(jsonMap, "open", data.open);
+    jsonTryPut(jsonMap, "from", data.from);
+    jsonTryPut(jsonMap, "volume", data.volume);
+    jsonTryPut(jsonMap, "symbol", data.symbol);
+    jsonTryPut(jsonMap, "preMarket", data.preMarket);
+    jsonTryPut(jsonMap, "afterHours", data.afterHours);
+    jsonTryPut(jsonMap, "high", data.high);
+    jsonTryPut(jsonMap, "low", data.low);
+    jsonTryPut(jsonMap, "close", data.close);
+    data.validData = true;
 
     return data;
 }

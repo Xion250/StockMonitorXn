@@ -14,11 +14,12 @@ struct Stock {
     public:
     StockSymbol symbol;
     double price;
+    double lowPrice;
+    double highPrice;
     double purchasePrice;
     unsigned long quantity;
 
     Stock() : symbol(0UL), price(0), quantity(0) {};
-    //Stock(StockSymbol s, StockInfo i) : symbol(s), info(i) {};
 
     std::string symbolStr(){
         return stockSymbolToString(symbol);
@@ -28,13 +29,14 @@ struct Stock {
 namespace StockData {
     struct DailyOpenClose {
         public:
+        bool validData;
         std::string from;
         std::string symbol;
         double open;
         double high;
         double low;
         double close;
-        unsigned long volume;
+        double volume;
         double afterHours;
         double preMarket;
         DailyOpenClose() {};
