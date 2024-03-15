@@ -1,15 +1,6 @@
 
 #include "userinterface.hpp"
 
-/*template<typename T>
-std::string UI::formatValue(T value, UI::PadSize padSize){
-    std::string str = std::to_string(value);
-    if(padSize > str.size()){
-        str += std::string(padSize - str.size(),' ');
-    }
-    return str;
-}*/
-
 std::string UI::formatStrValue(std::string str, UI::PadSize padSize){
     if(padSize > str.size()){
         str += std::string(padSize - str.size(),' ');

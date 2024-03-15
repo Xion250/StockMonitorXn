@@ -14,6 +14,7 @@ struct Stock {
     public:
     StockSymbol symbol;
     double price;
+    double purchasePrice;
     unsigned long quantity;
 
     Stock() : symbol(0UL), price(0), quantity(0) {};

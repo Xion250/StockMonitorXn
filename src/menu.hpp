@@ -3,6 +3,7 @@
 #define MENU_HPP
 
 #include "userinterface.hpp"
+#include "network.hpp"
 #include <functional>
 #include <map>
 
@@ -11,7 +12,9 @@ namespace UI {
     class Menu {
         public:
         Portfolio currentPortfolio;
-        Menu();
+        Network &network;
+
+        Menu(Network &n);
         bool menuInput();
         void resetMenu();
 

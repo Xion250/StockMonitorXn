@@ -3,7 +3,9 @@
 
 int main(){
 
-    UI::Menu menu = UI::Menu();
+    Network network = Network();
+
+    UI::Menu menu = UI::Menu(network);
 
     menu.resetMenu();
 

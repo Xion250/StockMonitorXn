@@ -1,14 +1,14 @@
 
 #include "menu.hpp"
 
-UI::Menu::Menu () {
+UI::Menu::Menu (Network &n) : network(n) {
 
     currentPortfolio = Portfolio("Untitled");
 
     menuFunctionMap = {
         {"Add",         &UI::Menu::addStock         },
         {"Remove",      &UI::Menu::removeStock      },
-        {"Print",       &UI::Menu::updateUI         },
+        {"Update",      &UI::Menu::updateUI         },
         {"Rename",      &UI::Menu::renamePortfolio  },
         {"Save",        &UI::Menu::savePortfolio    },
         {"Open",        &UI::Menu::loadPortfolio    },
@@ -18,7 +18,7 @@ UI::Menu::Menu () {
     };
 }
 
-bool UI::Menu::menuInput(){
+bool UI::Menu::menuInput() {
     std::string str;
     if(!UI::getUserInput("", str)){return false;}
 
@@ -29,7 +29,7 @@ bool UI::Menu::menuInput(){
         (this->*func)();
         return true;
     }
-    
+
     if(str == "Exit"){return false;}
 
     printf("Invalid Command: %s\n", str.c_str());
@@ -79,25 +79,25 @@ void UI::Menu::renamePortfolio() {
     updateUI();
 }
 
-void UI::Menu::savePortfolio(){
+void UI::Menu::savePortfolio() {
     currentPortfolio.save();
     printf("Saved %s\n", currentPortfolio.data.name.c_str());
 }
 
-void UI::Menu::loadPortfolio(){
+void UI::Menu::loadPortfolio() {
     std::string name;
     UI::getUserInput("Enter portfolio name", name, Clear);
     currentPortfolio.load(name);
     updateUI();
 }
 
-void UI::Menu::createPortfolio(){
+void UI::Menu::createPortfolio() {
     currentPortfolio = Portfolio();
     UI::getUserInput("Enter new portfolio name", currentPortfolio.data.name, Clear);
     updateUI();
 }
 
-void UI::Menu::resetMenu(){
+void UI::Menu::resetMenu() {
     system("clear");
     std::cout << "Stock Monitor\n";
     std::cout << "Current Portfolio: " << currentPortfolio.data.name << "\n";
