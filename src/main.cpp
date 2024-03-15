@@ -4,15 +4,13 @@
 //#include "stock.hpp"
 
 int main(){
-    system("clear");
 
-    Portfolio portfolio = Portfolio();
+    Portfolio portfolio = Portfolio("Untitled");
+
     UI::PortfolioInterface pUI = UI::PortfolioInterface(portfolio);
-
-    savePortfolio(portfolio);
-
-    pUI.printTitle();
 
     while(pUI.menuInput()){}
     return 0;
 }
+
+//Add STO 7.2 80 Add FANG 24.3 27

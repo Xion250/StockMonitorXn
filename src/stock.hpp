@@ -7,25 +7,21 @@
 
 typedef uint32_t StockSymbol;
 
-struct StockInfo {
-    public:
-    double price;
-    unsigned long quantity;
-
-    StockInfo() : price(0.0), quantity(0) {};
-    StockInfo(double p, int q) : price(p), quantity(q) {};
-};
+StockSymbol stringToStockSymbol(std::string &str);
+std::string stockSymbolToString(StockSymbol symbol);
 
 struct Stock {
     public:
     StockSymbol symbol;
-    StockInfo info;
+    double price;
+    unsigned long quantity;
 
-    Stock() : symbol(0UL), info(StockInfo()) {};
-    Stock(StockSymbol s, StockInfo i) : symbol(s), info(i) {};
+    Stock() : symbol(0UL), price(0), quantity(0) {};
+    //Stock(StockSymbol s, StockInfo i) : symbol(s), info(i) {};
+
+    std::string symbolStr(){
+        return stockSymbolToString(symbol);
+    }
 };
-
-StockSymbol stringToStockSymbol(std::string &str);
-std::string stockSymbolToString(StockSymbol symbol);
 
 #endif
