@@ -2,29 +2,35 @@
 #ifndef PORTFOLIO_HPP
 #define PORTFOLIO_HPP
 
-#define SAVE_DATA_PATH "savedata/"
+#define SAVE_DATA_PATH "ProjectSaveData/StockMonitor/"
 
 #include "stock.hpp"
 #include <fstream>
 #include <iostream>
 #include <map>
 
-struct PortfolioData;
+struct PortfolioData {
+    public:
+
+    uint16_t stockCount;
+    std::string name;
+    std::string fileName;
+    bool autoSaveEnabled;
+    PortfolioData() {};
+    PortfolioData(std::string n) : name(n), fileName(n) {};
+};
 
 struct Portfolio {
     public:
-    uint16_t stockCount;
-
-    std::string name;
-    std::string fileName;
     
+    PortfolioData data;
     std::unordered_map<StockSymbol,Stock> stocks;
 
-    Portfolio() : name("Untitled1"), fileName("Untitled1") {};
-    Portfolio(std::string n) : name(n), fileName(n) {};
-    Portfolio(const PortfolioData &p);
+    Portfolio() : data() {};
+    Portfolio(std::string n) : data(n) {};
+    Portfolio(const PortfolioData &d) : data(d) {};
 
-    double totalStockValue();
+    double totalStockValue() const;
 
     bool addStock(Stock &stock);
 
@@ -37,14 +43,6 @@ struct Portfolio {
     void saveData(std::ofstream &file);
     void loadStockData(std::ifstream &file);
     void saveStockData(std::ofstream &file);
-};
-
-struct PortfolioData {
-    public:
-    uint16_t stockCount;
-    std::string name;
-    PortfolioData(){};
-    PortfolioData(const Portfolio &p) : stockCount(p.stocks.size()), name(p.name) {};
 };
 
 void verifyPortfolio(Portfolio &portfolio);

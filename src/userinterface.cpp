@@ -7,7 +7,7 @@ Stock UI::getStock(){
 
     std::string symbolStr;
 
-    if(!getUserInput("Enter stock symbol", symbolStr)){return Stock();}
+    if(!getUserInput("Enter stock symbol", symbolStr, Capital)){return Stock();}
     if(!getUserInput("Enter stock price", stock.price)){return Stock();}
     if(!getUserInput("Enter stock quantity", stock.quantity)){return Stock();}
 
@@ -34,81 +34,27 @@ void UI::printStockLine(Stock &stock){
     );
 }
 
-void UI::PortfolioInterface::printPortfolioValue(){
+void UI::printPortfolioValue(const Portfolio &portfolio) {
 
     printf("Portfolio Overview\n\n");
 
     printf("Name : %s\n", 
-        UI::Element(currentPortfolio.name.c_str()).med()
+        UI::Element(portfolio.data.name.c_str()).med()
     );
 
     printf("Value $%s | Stocks %s\n\n", 
-        UI::Element(currentPortfolio.totalStockValue()).small(), 
-        UI::Element(currentPortfolio.stocks.size()).small()
+        UI::Element(portfolio.totalStockValue()).small(), 
+        UI::Element(portfolio.stocks.size()).small()
     );
 }
 
-void UI::PortfolioInterface::printOverview(){
-    system("clear");
+void UI::printOverview(const Portfolio &portfolio) {
     
-    printPortfolioValue();
+    printPortfolioValue(portfolio);
 
-    printf("Stocks:%s\n", std::string(Tiny + 3*Small, '_').c_str());
+    printf("Stocks:\n");
 
-    for(auto p : currentPortfolio.stocks){
+    for(auto p : portfolio.stocks){
         printStockLine(p.second);
     }
-}
-
-void UI::PortfolioInterface::addStock(){
-    Stock stock = UI::getStock();
-
-    if(currentPortfolio.addStock(stock)){
-        printf("%s added\n", stockSymbolToString(stock.symbol).c_str());
-    }
-    else{
-        printf("Failed to add stock\n");
-    }
-}
-
-void UI::PortfolioInterface::renamePortfolio(){
-    UI::getUserInput("Enter new portfolio name", currentPortfolio.name);
-    printf("Portfolio name changed to %s\n", currentPortfolio.name.c_str());
-}
-
-void UI::PortfolioInterface::savePortfolio(){
-    currentPortfolio.save();
-    printf("Saved %s\n", currentPortfolio.name.c_str());
-}
-
-void UI::PortfolioInterface::loadPortfolio(){
-    currentPortfolio.load("CommSec");
-    printf("Loaded %s\n", currentPortfolio.name.c_str());
-}
-
-void UI::PortfolioInterface::createPortfolio(){
-    currentPortfolio = Portfolio();
-    UI::getUserInput("Enter new portfolio name", currentPortfolio.name);
-}
-
-void UI::PortfolioInterface::resetMenu(){
-    system("clear");
-    std::cout << "Stock Monitor\n";
-    std::cout << "Current Portfolio: " << currentPortfolio.name << "\n";
-}
-
-bool UI::PortfolioInterface::menuInput(){
-    std::string str;
-    std::cin >> str;
-    if(str == "Add"){addStock(); return true;}
-    if(str == "Print"){printOverview(); return true;}
-    if(str == "Rename"){renamePortfolio(); return true;}
-    if(str == "Save"){savePortfolio(); return true;}
-    if(str == "Open"){loadPortfolio(); return true;}
-    if(str == "New"){createPortfolio(); return true;}
-    if(str == "Exit"){return false;}
-
-    printf("Invalid Command\n");
-    std::cin.clear();
-    return true;
 }

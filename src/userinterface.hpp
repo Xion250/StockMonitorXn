@@ -7,29 +7,10 @@
 #include <iostream>
 
 namespace UI {
-
     Stock getStock();
     void printStockLine(Stock &stock);
-
-    class PortfolioInterface {
-        public:
-        Portfolio &currentPortfolio;
-
-        void printPortfolioValue();
-        void printOverview();
-        void addStock();
-        bool menuInput();
-
-        void resetMenu();
-
-        void renamePortfolio();
-        void createPortfolio();
-        void savePortfolio();
-        void loadPortfolio();
-
-        PortfolioInterface(Portfolio &portfolio) : currentPortfolio(portfolio) {};
-    };
-
+    void printPortfolioValue(const Portfolio &portfolio);
+    void printOverview(const Portfolio &portfolio);
 }
 
 #endif

@@ -8,12 +8,15 @@ namespace UI {
 
     enum PadSize {Tiny = 5, Small = 8, Medium = 16, Large = 24};
 
+    enum InputFormat {Default, Clear, Capital};
+
     std::string formatStrValue(std::string str, PadSize padSize);
     std::string formatDoubleValue(double value, PadSize size);
     template<typename T> 
     std::string formatValue(T value, UI::PadSize padSize){return formatStrValue(std::to_string(value), padSize);}
     std::string decimalToString(double value);
 
+    void formatUserInput(std::string &str, InputFormat format);
     bool promptUserInput(std::string &prompt);
 
     template<typename T> bool getUserInput(std::string prompt, T &var){
@@ -21,6 +24,8 @@ namespace UI {
         std::cin >> var;
         return true;
     }
+
+    bool getUserInput(std::string prompt, std::string &str, InputFormat format = Default);
 
     bool getExit();
 

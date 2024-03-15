@@ -1,15 +1,14 @@
 
-#include "userinterface.hpp"
-//#include "portfolio.hpp"
-//#include "stock.hpp"
+#include "menu.hpp"
 
 int main(){
 
-    Portfolio portfolio = Portfolio("Untitled");
+    UI::Menu menu = UI::Menu();
 
-    UI::PortfolioInterface pUI = UI::PortfolioInterface(portfolio);
+    menu.resetMenu();
 
-    while(pUI.menuInput()){}
+    while(menu.menuInput()){}
+
     return 0;
 }
 
