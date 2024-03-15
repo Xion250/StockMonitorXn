@@ -5,6 +5,10 @@ int main(){
 
     Network network = Network();
 
+    //std::string symbol = "NVDA";
+    //network.getDailyOpenClose(stringToStockSymbol(symbol));
+    //return 0;
+
     UI::Menu menu = UI::Menu(network);
 
     menu.resetMenu();
@@ -13,5 +17,3 @@ int main(){
 
     return 0;
 }
-
-//Add STO 7.2 80 Add FANG 24.3 27

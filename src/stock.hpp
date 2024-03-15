@@ -25,4 +25,19 @@ struct Stock {
     }
 };
 
+namespace StockData {
+    struct DailyOpenClose {
+        public:
+        std::string from;
+        std::string symbol;
+        double open;
+        double high;
+        double low;
+        double close;
+        unsigned long volume;
+        double afterHours;
+        double preMarket;
+        DailyOpenClose() {};
+    };
+}
 #endif

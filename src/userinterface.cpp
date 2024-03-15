@@ -8,7 +8,7 @@ Stock UI::getStock(){
     std::string symbolStr;
 
     if(!getUserInput("Enter stock symbol", symbolStr, Capital)){return Stock();}
-    if(!getUserInput("Enter stock price", stock.price)){return Stock();}
+    if(!getUserInput("Enter stock purchase price", stock.purchasePrice)){return Stock();}
     if(!getUserInput("Enter stock quantity", stock.quantity)){return Stock();}
 
     stock.symbol = stringToStockSymbol(symbolStr);

@@ -17,7 +17,7 @@ std::string UI::formatDoubleValue(double value, UI::PadSize padSize){
 }
 
 std::string UI::decimalToString(double value){
-    return std::to_string((int)value) + '.' + std::to_string((int)(100*value)%100);
+    return std::to_string((int)value) + '.' + std::to_string((int)(100*abs(value))%100);
 }
 
 void UI::formatUserInput(std::string &str, InputFormat format){

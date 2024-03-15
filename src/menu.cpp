@@ -39,6 +39,11 @@ bool UI::Menu::menuInput() {
 
 
 void UI::Menu::updateUI() {
+
+    for(auto &p : currentPortfolio.stocks){
+        network.updateStock(p.second);
+    }
+
     system("clear");
     printf("Autosave: ");
     if(currentPortfolio.data.autoSaveEnabled){
