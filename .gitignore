@@ -33,3 +33,4 @@
 
 # Data
 *.doc
+.DS_Store
