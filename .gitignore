@@ -34,4 +34,7 @@
 # Savedata
 savedata/**
 *.doc
+
+# Other
 .DS_Store
+.vscode
