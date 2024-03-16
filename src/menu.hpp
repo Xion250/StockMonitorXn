@@ -23,12 +23,14 @@ namespace UI {
 
         void updateUI();
         void addStock();
+        void printHelp();
         void removeStock();
         void renamePortfolio();
         void createPortfolio();
         void savePortfolio();
         void loadPortfolio();
         void toggleAutoSave();
+        void viewStock();
     };
 }
 

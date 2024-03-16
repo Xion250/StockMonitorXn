@@ -19,6 +19,7 @@ class Network {
     Network() {};
 
     bool updateStock(Stock &stock);
+    
     std::string makePolygonRequest(PolygonRequest &request);
     std::string exec(const char* cmd);
 

@@ -2,19 +2,24 @@
 #ifndef UIUTILS_HPP
 #define UIUTILS_HPP
 
+#define TERMINAL_WIDTH 80
+
+#define PAD_TYPE Strict
+
 #include <string>
 
 namespace UI {
 
-    enum PadSize {Tiny = 5, Small = 8, Medium = 16, Large = 24};
+    enum PadSize {Tiny = TERMINAL_WIDTH/16, Small = TERMINAL_WIDTH/8, Medium = TERMINAL_WIDTH/5, Large = TERMINAL_WIDTH/2};
 
-    enum InputFormat {Default, Clear, Capital};
+    enum PadType {Overflow, Strict};
 
-    std::string formatStrValue(std::string str, PadSize padSize);
-    std::string formatDoubleValue(double value, PadSize size);
-    template<typename T> 
-    std::string formatValue(T value, UI::PadSize padSize){return formatStrValue(std::to_string(value), padSize);}
-    std::string decimalToString(double value);
+    enum InputFormat {Propercase, Anycase, Uppercase, Lowercase};
+
+    std::string formatPadStr(std::string str, PadSize padSize, PadType padType = Overflow);
+    std::string toDecimalStr(double value);
+    std::string toDecimalStr(double value, char suffix);
+    std::string toDecimalStr(char prefix, double value);
 
     void formatUserInput(std::string &str, InputFormat format);
     bool promptUserInput(std::string &prompt);
@@ -25,7 +30,7 @@ namespace UI {
         return true;
     }
 
-    bool getUserInput(std::string prompt, std::string &str, InputFormat format = Default);
+    bool getUserInput(std::string prompt, std::string &str, InputFormat format = Propercase);
 
     bool getExit();
 
@@ -35,7 +40,9 @@ namespace UI {
         template<typename T> Element(const T t) : text(std::to_string(t)) {};
         Element(const std::string t) : text(t) {};
         Element(const char *t) : text(t) {};
-        Element(const double t) : text(decimalToString(t)) {};
+        Element(const double t) : text(toDecimalStr(t)) {};
+        Element(const double t, char currencySymbol) : text(toDecimalStr(t, currencySymbol)) {};
+        Element(char currencySymbol, const double t) : text(toDecimalStr(currencySymbol, t)) {};
 
         void setPadSize(PadSize padSize);
 
@@ -43,7 +50,6 @@ namespace UI {
         const char *small();
         const char *med();
         const char *large();
-
 
         private:
         std::string text;

@@ -4,7 +4,7 @@
 double Portfolio::totalStockValue() const {
     double value = 0;
     for(auto p : stocks){
-        value += p.second.price * p.second.quantity;
+        value += p.second.calculatePrice() * p.second.quantity;
     }
     return value;
 }

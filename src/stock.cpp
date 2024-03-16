@@ -21,3 +21,8 @@ std::string stockSymbolToString(StockSymbol symbol){
     }
     return str;
 }
+
+double Stock::calculatePrice() {
+    if(!daily.validData){return 0.0;}
+    return 0.5 * (daily.open + daily.close);
+}

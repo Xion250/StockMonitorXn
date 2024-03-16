@@ -7,9 +7,7 @@ bool Network::updateStock(Stock &stock){
 
     if(!data.validData){return false;}
 
-    stock.highPrice = data.high;
-    stock.lowPrice = data.low;
-    stock.price = data.open;
+    stock.daily = data;
     return true;
 }
 
