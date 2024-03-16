@@ -6,17 +6,18 @@ UI::Menu::Menu (Network &n) : network(n) {
     currentPortfolio = Portfolio("Untitled");
 
     menuFunctionMap = {
-        {"Add",         &UI::Menu::addStock         },
-        {"Help",        &UI::Menu::printHelp        },
-        {"Remove",      &UI::Menu::removeStock      },
-        {"Update",      &UI::Menu::updateUI         },
-        {"Rename",      &UI::Menu::renamePortfolio  },
-        {"Save",        &UI::Menu::savePortfolio    },
-        {"Open",        &UI::Menu::loadPortfolio    },
-        {"New",         &UI::Menu::createPortfolio  },
-        {"Back",        &UI::Menu::resetMenu        },
-        {"Autosave",    &UI::Menu::toggleAutoSave   },
-        {"View",        &UI::Menu::viewStock        }
+        {"add",         &UI::Menu::addStock         },
+        {"help",        &UI::Menu::printHelp        },
+        {"remove",      &UI::Menu::removeStock      },
+        {"update",      &UI::Menu::updateUI         },
+        {"rename",      &UI::Menu::renamePortfolio  },
+        {"save",        &UI::Menu::savePortfolio    },
+        {"open",        &UI::Menu::loadPortfolio    },
+        {"new",         &UI::Menu::createPortfolio  },
+        {"back",        &UI::Menu::resetMenu        },
+        {"autosave",    &UI::Menu::toggleAutoSave   },
+        {"view",        &UI::Menu::viewStock        },
+        {"apikey",      &UI::Menu::setApiKey        }
     };
 }
 
@@ -32,8 +33,9 @@ void UI::Menu::printHelp() {
 }
 
 bool UI::Menu::menuInput() {
+    
     std::string str;
-    if(!UI::getUserInput("", str)){return false;}
+    UI::getUserInput("", str);
 
     std::unordered_map<std::string, void(UI::Menu::*)()>::iterator it = menuFunctionMap.find(str);
 
@@ -45,7 +47,7 @@ bool UI::Menu::menuInput() {
 
     if(str == "Exit"){return false;}
 
-    printf("Invalid Command: %s\n", str.c_str());
+    printf("Invalid Command: %s", str.c_str());
     std::cin.clear();
     return true;
 }
@@ -142,4 +144,17 @@ void UI::Menu::toggleAutoSave() {
     UI::getUserInput("Autosave (On/Off) ?", setFalse);
     currentPortfolio.data.autoSaveEnabled = (setFalse != "Off");
     updateUI();
+}
+
+void UI::Menu::setApiKey() {
+    std::string apiKey;
+    UI::getUserInput("Enter Polygon Api Key", apiKey, Anycase);
+    FileManager::createPolygonApiKey(apiKey);
+
+    if(!network.updateApiKey()){
+        UI::printApiKeyError();
+    }
+    else{
+        printf("Polygon Api Key successfully updated\n");
+    }
 }

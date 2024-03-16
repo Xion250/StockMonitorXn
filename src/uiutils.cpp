@@ -65,25 +65,12 @@ void UI::formatUserInput(std::string &str, InputFormat format){
     }
 }
 
-bool UI::getUserInput(std::string prompt, std::string &str, InputFormat format){
-    if(!UI::promptUserInput(prompt)){return false;}
-    std::cin >> str;
-    formatUserInput(str, format);
-    return true;
-}
-
-bool UI::getExit(){
-    const char exitStr[] = "Exit";
-    char str[4];
-    // TODO : Implement Exit Code
-    return false;
-}
-
-bool UI::promptUserInput(std::string &prompt){
+void UI::getUserInput(std::string prompt, std::string &str, InputFormat format){
     if(std::cin.peek() == '\n' || std::cin.peek() == '\0'){
         printf("%s\n", prompt.c_str());
     }
-    return !getExit();
+    std::cin >> str;
+    formatUserInput(str, format);
 }
 
 void UI::Element::setPadSize(PadSize padSize){

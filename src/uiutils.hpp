@@ -24,15 +24,14 @@ namespace UI {
     void formatUserInput(std::string &str, InputFormat format);
     bool promptUserInput(std::string &prompt);
 
-    template<typename T> bool getUserInput(std::string prompt, T &var){
-        if(!promptUserInput(prompt)){return false;}
+    template<typename T> void getUserInput(std::string prompt, T &var){
+        if(std::cin.peek() == '\n' || std::cin.peek() == '\0'){
+        printf("%s\n", prompt.c_str());
+        }
         std::cin >> var;
-        return true;
     }
 
-    bool getUserInput(std::string prompt, std::string &str, InputFormat format = Propercase);
-
-    bool getExit();
+    void getUserInput(std::string prompt, std::string &str, InputFormat format = Lowercase);
 
     struct Element {
         public:

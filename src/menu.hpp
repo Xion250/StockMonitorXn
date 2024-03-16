@@ -31,6 +31,7 @@ namespace UI {
         void loadPortfolio();
         void toggleAutoSave();
         void viewStock();
+        void setApiKey();
     };
 }
 

@@ -2,8 +2,7 @@
 #ifndef PORTFOLIO_HPP
 #define PORTFOLIO_HPP
 
-#define SAVE_DATA_PATH "ProjectSaveData/StockMonitor/"
-
+#include "filemanager.hpp"
 #include "stock.hpp"
 #include <fstream>
 #include <iostream>

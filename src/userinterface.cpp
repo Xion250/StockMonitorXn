@@ -7,9 +7,9 @@ Stock UI::getStock(){
 
     std::string symbolStr;
 
-    if(!getUserInput("Enter stock symbol", symbolStr, Uppercase)){return Stock();}
-    if(!getUserInput("Enter stock purchase price", stock.purchasePrice)){return Stock();}
-    if(!getUserInput("Enter stock quantity", stock.quantity)){return Stock();}
+    getUserInput("Enter stock symbol", symbolStr, Uppercase);
+    getUserInput("Enter stock purchase price", stock.purchasePrice);
+    getUserInput("Enter stock quantity", stock.quantity);
 
     stock.symbol = stringToStockSymbol(symbolStr);
 
@@ -98,4 +98,25 @@ void UI::printStockView(Stock &stock) {
         UI::Element('$', stock.daily.high).small()
     );
     printf("\n");
+}
+
+void UI::printAppHeader() {
+    printf("   ---   Stock Monitor Xn   ---   \n");
+    printf("To view a list of possible commands, type 'help'\n");
+    printBar();
+}
+
+void UI::printApiKeyError() {
+    system("clear");
+    printf("Error: Failed to get Api Key\n\n");
+    printf("Stock Monitor Xn uses https://polygon.io to update stock information\n\n");
+    printf("To fix this, you must:\n\n");
+
+    printf("1. Have a polygon.io account\n\t- goto at https://polygon.io/signup\n\n");
+
+    printf("2. Have a polygon.io Api Key\n\t- view or generate one at https://polygon.io/dashboard/api-keys\n\n");
+
+    printf("3. Save you Api Key to Stock Monitor Xn\n\t- your Api Key will be stored in %s%s\n\n", SAVE_DATA_PATH, FILE_NAME_API_KEY);
+
+    printf("Type 'apikey' to update your key, or type 'help' for a list of commands\n\n");
 }

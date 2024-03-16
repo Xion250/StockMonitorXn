@@ -1,6 +1,10 @@
 
 #include "network.hpp"
 
+bool Network::updateApiKey() {
+    return FileManager::readPolygonApiKey(&polygonApiKey);
+}
+
 bool Network::updateStock(Stock &stock){
 
     StockData::DailyOpenClose data = getDailyOpenClose(stock.symbol);
@@ -13,7 +17,7 @@ bool Network::updateStock(Stock &stock){
 
 std::string Network::makePolygonRequest(PolygonRequest &request) {
     printf("Fetching %s Stock Data...\n", request.symbolStr.c_str());
-    std::string cmd = std::string("curl ") + request.getUrl() + " -s";
+    std::string cmd = std::string("curl ") + request.getUrl() + polygonApiKey + " -s";
     std::string jsonResult = exec(cmd.c_str());
     return jsonResult;
 }

@@ -13,8 +13,9 @@ namespace UI {
     void printStockView(Stock &stock);
     void printPortfolioValue(const Portfolio &portfolio);
     void printOverview(const Portfolio &portfolio);
-
     void printBar();
+    void printAppHeader();
+    void printApiKeyError();
 }
 
 #endif
